@@ -45,6 +45,7 @@ public class UserDaoJDBCImpl implements UserDao {
             pstm.setString(2, lastName);
             pstm.setByte(3, age);
             pstm.executeUpdate();
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,6 +55,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try (PreparedStatement preparedStatement = conn.prepareStatement(DELETE_SQL)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -67,6 +69,7 @@ public class UserDaoJDBCImpl implements UserDao {
                         resultSet.getString("lastName"), resultSet.getByte("age"));
                 user.setId(resultSet.getLong("id"));
                 userList.add(user);
+                conn.commit();
             }
         } catch (SQLException e) {
             e.printStackTrace();
