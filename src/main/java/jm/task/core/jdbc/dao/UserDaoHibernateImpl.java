@@ -1,8 +1,5 @@
 package jm.task.core.jdbc.dao;
 
-
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
 import jm.task.core.jdbc.model.User;
 
 import java.util.ArrayList;
@@ -13,6 +10,9 @@ import jm.task.core.jdbc.util.Util;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -25,7 +25,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createNativeQuery("CREATE TABLE IF NOT EXISTS users (" +
+            session.createSQLQuery("CREATE TABLE IF NOT EXISTS users (" +
                     "`id` INT NOT NULL AUTO_INCREMENT,`name` VARCHAR(100) NOT NULL,`lastName` VARCHAR(100) NOT NULL,`age` BIGINT(100) NOT NULL,PRIMARY KEY (`id`));").executeUpdate();
             transaction.commit();
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createNativeQuery("DROP TABLE IF EXISTS users").executeUpdate();
+            session.createSQLQuery("DROP TABLE IF EXISTS users").executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -108,10 +108,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            List<User> userList = session.createQuery(session.getCriteriaBuilder().createQuery(User.class)).getResultList();
-            for (Object o : userList) {
-                session.remove(o);
-            }
+            session.createSQLQuery("TRUNCATE TABLE users").executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

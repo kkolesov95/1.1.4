@@ -38,7 +38,7 @@ public class Util {
                 settings.put(Environment.URL, "jdbc:mysql://localhost:3306/mysql?autoReconnect=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC");
                 settings.put(Environment.USER, "kkolesov");
                 settings.put(Environment.PASS, "Maculatura133232*");
-                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
+                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
 
                 settings.put(Environment.SHOW_SQL, "true");
 
@@ -58,8 +58,6 @@ public class Util {
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-        } else {
-            sessionFactory.close();
         }
         return sessionFactory;
     }
